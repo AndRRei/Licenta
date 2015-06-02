@@ -1,0 +1,51 @@
+tr , td{
+	padding : 5px;
+}
+
+#layoutMenu li{
+	width: 200px;
+	text-align: center;
+	
+}
+#content{
+	margin:50px 100px 50px 100px;
+}
+.navbar-default{
+	margin:20px 50px 20px 50px;
+}
+#Operation td input{
+	width: 120px;
+}
+
+#id_readState , #id_updateState,#id_writeState{
+	width: 20px !important;
+}
+.navbar-default{
+	background-color: #565695;
+}
+
+.navbar-default a{
+	color:whitesmoke;
+}
+.navbar-default li:hover a
+{
+	background-color: #09093B;
+	border-radius: 0px;
+	border-top:  0px;
+}
+.navbar-default li a:focus
+{
+	background-color: #09093B;
+	border-radius: 0px;
+	border-top:  0px;
+}
+#id-panel-heading{
+	background-color: #1A1A59;
+	color:whitesmoke;
+}
+#id-panel-body{
+	min-height: 200px;
+}
+#id-options-panel li{
+	display: inline-block;
+}

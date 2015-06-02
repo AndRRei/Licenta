@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+	<div id="id-panel-heading" class="panel-heading">
+		<h3 class="panel-title">Logs</h3>
+	</div>
+	<div id="id-panel-body" class="panel-body">
+		Here you can see test progress in real time . Please configure the test before start it .
+	</div>
+</div>
+
+<div id="id-options-panel">
+	<ul>
+		<li>
+			<button id="configureTestButton" type="button" class="btn btn-default">
+				Configure Test
+			</button>
+		</li>
+		<li>
+			<p>Number of operations :</p>
+		</li>
+		<li>
+			<input class="form-control" type="text">
+		</li>
+		<li>
+			<button id="configureTestButton" type="button" class="btn btn-default">
+				Start Test
+			</button>
+		</li>
+	</ul>
+</div>
+
+<div class="modal fade" id="configureTestModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Test configuration</h4>
+			</div>
+			
+			<div class="modal-body">
+				<form id="configurationForm" action="" method="post">
+				{% csrf_token %}
+				<p>
+					<table id="Operation">
+						<tr>
+							<td>Operations</td>
+							<td>Percentage</td>
+							<td>Keys</td>
+							<td>Size</td>
+						</tr>
+
+						<tr>
+							<td>{{form.readState}}Read</td>
+							<td>{{form.readPercentage}}</td>
+							<td>{{form.readKeys}}</td>
+							<td>{{form.readSize}}</td>
+						</tr>
+						<tr>
+							<td>{{form.writeState}}Write</td>
+							<td>{{form.writePercentage}}</td>
+							<td>{{form.writeKeys}}</td>
+							<td>{{form.writeSize}}</td>
+						</tr>
+						<tr>
+							<td>{{form.updateState}}Update</td>
+							<td>{{form.updatePercentage}}</td>
+							<td>{{form.updateKeys}}</td>
+							<td>{{form.updateSize}}</td>
+						</tr>
+
+					</table>
+				</p>
+				<button type="submit" class="btn btn-primary">
+					Save changes
+				</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Close
+				</button>
+				<button type="button" class="btn btn-primary">
+					Save changes
+				</button>
+			</div>
+			
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock %}
+
+{% block script %}
+<script>
+	jQuery(document).ready(function() {
+		$("#configureTestButton").click(function() {
+			$("#configureTestModal").modal();
+		});
+		var aux;
+		$("#addOperation").click(function() {
+			$("#NumOfOperatios").val(parseInt($("#NumOfOperatios").val()) + 1);
+			aux = $("#Operation").html();
+			$('#operations').append(aux);
+			
+		
+
+	});
+	$('#configurationForm').submit(function(event) { // set onsubmit event to the form
+  			event.preventDefault();
+  			var data = $('#configurationForm').serialize(); // serialize all the data in the form 
+  			$.ajax({
+    		url: 'MongoTests/testMongoDB', // php script to retern json encoded string
+    		data: data,  // serialized data to send on server
+    		//dataType:'json', // set recieving type - JSON in case of a question
+    		type:'POST', // set sending HTTP Request type
+    		async:false, 
+    		success: function(data) { // callback method for further manipulations             
+      		
+        	alert("Succes");
+      		
+
+    		},
+    		error: function(data) { alert("error"); // if error occured
+			}
+  		});
+  	//return false;
+	});
+	});
+	
+
+	
+	
+
+</script>
+{% endblock %}
