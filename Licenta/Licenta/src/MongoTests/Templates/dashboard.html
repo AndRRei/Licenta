@@ -19,17 +19,20 @@
 				Configure Test
 			</button>
 		</li>
+		<form id="startTestForm" action="" method="post">
+		{% csrf_token %}
 		<li>
 			<p>Number of operations :</p>
 		</li>
 		<li>
-			<input class="form-control" type="text">
+			<input name="NumberOfOperations" class="form-control" type="text">
 		</li>
 		<li>
-			<button id="configureTestButton" type="button" class="btn btn-default">
+			<button id="startTestButton" type="submit" class="btn btn-default">
 				Start Test
 			</button>
 		</li>
+		</form>
 	</ul>
 </div>
 
@@ -115,14 +118,14 @@
   			event.preventDefault();
   			var data = $('#configurationForm').serialize(); // serialize all the data in the form 
   			$.ajax({
-    		url: 'MongoTests/testMongoDB', // php script to retern json encoded string
+    		url: 'MongoTests/saveTestConfiguration', // php script to retern json encoded string
     		data: data,  // serialized data to send on server
     		//dataType:'json', // set recieving type - JSON in case of a question
     		type:'POST', // set sending HTTP Request type
     		async:false, 
     		success: function(data) { // callback method for further manipulations             
       		
-        	alert("Succes");
+        	console.log(data);
       		
 
     		},
@@ -130,6 +133,22 @@
 			}
   		});
   	//return false;
+	});
+	$("#startTestForm").submit(function(event){
+		event.preventDefault();
+		
+		$.ajax({
+			url:'MongoTests/testMongoDB',
+			data:$('#startTestForm').serialize(),
+			type:'POST',
+			success :function(data){
+				console.log(data);
+			},
+			error:function(data){
+				alert("eroare");
+			}
+						
+		});
 	});
 	});
 	

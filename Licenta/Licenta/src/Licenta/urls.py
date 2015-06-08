@@ -10,5 +10,6 @@ urlpatterns = patterns('',
    #url(r'^MongoTests/base', 'MongoTests.views.base'),
    #url(r'^MongoTests/tests', 'MongoTests.views.tests',name='tests'),
     url(r'^MongoTests/dashboard', 'MongoTests.views.dashboard',name='dashboard'),
-    url(r'MongoTests/testMongoDB' , 'MongoTests.views.testMongoDB')
+    url(r'MongoTests/testMongoDB' , 'MongoTests.views.testMongoDB'),
+    url(r'MongoTests/saveTestConfiguration',"MongoTests.views.saveTestConfiguration")
 )

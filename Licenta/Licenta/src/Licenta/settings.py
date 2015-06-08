@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'MongoTests',
     'rest_framework',
+    
 )
 
 MIDDLEWARE_CLASSES = (

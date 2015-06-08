@@ -7,6 +7,8 @@ from MongoTests.models import TestConfiguration
 from django.http import HttpResponse
 from django import forms
 from django.shortcuts import render
+from MongoTests.CreateTables import TableGenerator
+from MongoTests.DatabaseTester import DatabaseTester
 
 class TestConfigurationForm(ModelForm):
     class Meta:
@@ -61,11 +63,18 @@ t1 =myThread(0)
 def dashboard(request):
     Form = modelform_factory(TestConfiguration,form=TestConfigurationForm)
     return render(request,'dashboard.html',{'form':Form})
-def testMongoDB(request):
+def saveTestConfiguration(request):
     configuration = TestConfiguration()
     configuration = request.POST
+    request.session["test_configuration"]=configuration
     print (configuration)
-    
     return HttpResponse("succes");
+def testMongoDB(request):
+    cr=TableGenerator(request.session["test_configuration"],request.POST.get('NumberOfOperations',False))
+    cr.createTables()
+    tester = DatabaseTester(request.session["test_configuration"],request.POST.get('NumberOfOperations',False))
+    time_interval=tester.test()
+    return HttpResponse("succes from test Mongo with : " + str(time_interval));
+
 
     
