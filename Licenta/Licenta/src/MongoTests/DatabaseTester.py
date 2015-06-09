@@ -7,6 +7,8 @@ import pymongo
 import datetime 
 import json
 from pymongo import MongoClient
+from MongoTests.TableGenerator import TableGenerator
+from random import randint
 
 class DatabaseTester():
     '''
@@ -26,34 +28,41 @@ class DatabaseTester():
         client = MongoClient()
         db=client.database
         print (db.collection_names());
-        if 'write_collection' in db.collection_names():
-            s=self.createKeyContentBySize(configuration)
-            documents =[]
-            for i in range (1,int(self.NumberOfOperations)):
-                document=self.createDocument(configuration,s)
-                documents.append(document)
-            print(documents)    
-            a = datetime.datetime.now()
-            db.write_collection.insert_many(documents)
-            b = datetime.datetime.now()
-            c=b-a
-            return c.microseconds
-        db.insert_collection.drop()
+        readVector=[]
+        writeVector=[]
+        updateVector=[]
+        if 'readState' in configuration:
+            for i in range (0,int(configuration['readPercentage'])):
+                readVector.append(i+1)
+        if 'writeState' in configuration:
+            for i in range (0,int(configuration['writePercentage'])):
+                writeVector.append(i+1+len(readVector))
+        if 'updateState' in configuration:
+            for i in range (0,int(configuration['updatePercentage'])):
+                updateVector.append(i+1+len(readVector)+len(writeVector))
+        now=datetime.datetime.now()
+        for i in range(0,int(self.NumberOfOperations)):
+            random = randint(1,100)
+            if random in readVector:
+                db.read_collection.find_one({"test":"test"})
+            if random in writeVector:
+                tb=TableGenerator(configuration,self.NumberOfOperations)
+                s=tb.createKeyContentBySize(configuration['writeSize'])
+                document=tb.createDocument(configuration['writeKeys'],s)
+                db.write_collection.insert(document)
+                tb.printCollection(db.write_collection)
+            if  random in updateVector:
+                db.update_collection.update({"test":"test"},{"$set":{"test1":"test1"}})
+                 
+        later=datetime.datetime.now()
+        testTime=later-now
+        return testTime.microseconds        
+        db.read_collection.drop()
         db.update_collection.drop()
         db.write_collection.drop()
-    def createDocument(self,TestConfiguration,s):
-        document = {}
-        key=""
-        for i in range (1,int(self.TestConfiguration['writeKeys'])):
-            key ="key" + str(i)
-            document.update({key : s})
-        return document    
-        
-    def createKeyContentBySize(self,TestConfiguration):
-        s=""
-        for i in range(1,int(self.TestConfiguration['writeSize'])):
-            s+="a"
-        return s    
+   
+                
+            
         
         
         

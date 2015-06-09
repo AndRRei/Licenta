@@ -7,7 +7,7 @@ from MongoTests.models import TestConfiguration
 from django.http import HttpResponse
 from django import forms
 from django.shortcuts import render
-from MongoTests.CreateTables import TableGenerator
+from MongoTests.TableGenerator import TableGenerator
 from MongoTests.DatabaseTester import DatabaseTester
 
 class TestConfigurationForm(ModelForm):
