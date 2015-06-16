@@ -32,14 +32,12 @@ class TableGenerator():
             db.read_collection.insert_one({"create":"readCollection"})
             documents=self.createDocuments(int(int(self.NumberOfOperations) * float(int(configuration['readPercentage'])*0.01)),configuration['readSize'],configuration['readKeys'])
             db.read_collection.insert_many(documents)
-            self.printCollection(db.read_collection)
         if 'writeState' in configuration:
             db.write_collection.insert_one({"create":"writeCollection"})
         if 'updateState' in configuration:
             db.update_collection.insert_one({"create":"updateCollection"})
             documents=self.createDocuments(int(int(self.NumberOfOperations) * float(int(configuration['updatePercentage'])*0.01)),configuration['updateSize'],configuration['updateKeys'])
             db.update_collection.insert_many(documents)
-            self.printCollection(db.update_collection)
     def createDocument(self,numberOfKeys,s):
         document = {}
         key=""

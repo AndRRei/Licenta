@@ -45,7 +45,32 @@ tr , td{
 }
 #id-panel-body{
 	min-height: 200px;
+	max-height: 200px;
+	overflow-y: scroll;
 }
 #id-options-panel li{
 	display: inline-block;
 }
+#progressBar{
+	width:100%;
+	height: 25px;
+	
+}
+
+#progressBarDiv{
+	width:100%;
+	display:inline-block;
+}
+#id-panel-CPUUsage-heading,#id-panel-memoryUsage-heading,#id-panel-diskUsage-heading,#id-panel-testConfiguration-heading{
+	background-color: #8080B3;
+	color:whitesmoke;
+}
+#id-panel-CPUUsage-body,#id-panel-memoryUsage-body,#id-panel-diskUsage-body,#id-panel-testConfiguration-body{
+	min-height: 100px;
+	max-height: 100px;
+}
+#id-table-configuration{
+	width:100%;
+	height:100%;
+}
+

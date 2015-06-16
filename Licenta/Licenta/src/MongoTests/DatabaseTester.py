@@ -14,7 +14,7 @@ class DatabaseTester():
     '''
     classdocs
     '''
-
+    status=0
 
     def __init__(self, TestConfiguration,NumberOfOperations):
         '''
@@ -41,7 +41,7 @@ class DatabaseTester():
             for i in range (0,int(configuration['updatePercentage'])):
                 updateVector.append(i+1+len(readVector)+len(writeVector))
         now=datetime.datetime.now()
-        for i in range(0,int(self.NumberOfOperations)):
+        for i in range(1,int(self.NumberOfOperations)+1):
             random = randint(1,100)
             if random in readVector:
                 db.read_collection.find_one({"test":"test"})
@@ -50,9 +50,10 @@ class DatabaseTester():
                 s=tb.createKeyContentBySize(configuration['writeSize'])
                 document=tb.createDocument(configuration['writeKeys'],s)
                 db.write_collection.insert(document)
-                tb.printCollection(db.write_collection)
             if  random in updateVector:
                 db.update_collection.update({"test":"test"},{"$set":{"test1":"test1"}})
+            self.updateStatus(i)
+            
                  
         later=datetime.datetime.now()
         testTime=later-now
@@ -60,7 +61,9 @@ class DatabaseTester():
         db.read_collection.drop()
         db.update_collection.drop()
         db.write_collection.drop()
-   
+    
+    def updateStatus(self,status):
+        self.status=status
                 
             
         
